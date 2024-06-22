@@ -1,0 +1,36 @@
+# Fichiers générés par l'interpréteur Python
+__pycache__/
+*.py[cod]
+
+# Fichiers générés par l'outil de construction
+build/
+dist/
+
+# Fichiers générés par l'IDE
+.idea/
+
+# Fichiers de configuration
+*.ini
+*.cfg
+*.conf
+
+# Fichiers de données
+*.csv
+*.json
+
+# Fichiers de logs
+*.log
+
+# Fichiers de sauvegarde
+*.bak
+*.swp
+*~
+
+# Fichiers de documentation générés
+docs/_build/
+
+# Fichiers de dépendances
+venv/
+
+# Fichiers système
+.DS_Store
