@@ -1,22 +1,45 @@
 import torch
 from typing import Tuple
-from .config import KANBertConfig
+from model.utils.config import KANBertConfig
+
 
 class RoPE(torch.nn.Module):
+    """
+    Implementation of the Relative Positional Encoding.
+    """
+
     def __init__(self,
                  config: KANBertConfig) -> None:
+        """
+        Constructor for the RoPE class.
+
+        Args:
+            config (KANBertConfig): Configuration object for the KANBert model.
+        """
 
         super().__init__()
-        
-        self.attention_head_dim = config.hidden_dim // config.num_attention_heads
+
+        self.attention_head_dim = (config.hidden_dim //
+                                   config.num_attention_heads)
         self.max_sequence_len = config.max_sequence_len
         self.periodicity = config.periodicity
 
-        self.register_buffer('rotation_matrix', self._generate_rotation_matrix())
+        self.register_buffer('rotation_matrix',
+                             self._generate_rotation_matrix())
 
     def _generate_rotation_matrix(self) -> torch.Tensor:
+        """
+        Generates the rotation matrix for the RoPE.
 
-        frequencies = 1.0 / (self.periodicity ** (torch.arange(0, self.attention_head_dim, 2) / self.attention_head_dim))
+        Returns:
+            torch.Tensor: Rotation matrix of shape
+                          (max_sequence_len, attention_head_dim).
+        """
+
+        frequencies = 1.0 / (
+                      self.periodicity ** (
+                        torch.arange(0, self.attention_head_dim, 2) /
+                        self.attention_head_dim))
         indexes = torch.arange(self.max_sequence_len)
         angles = torch.outer(indexes, frequencies).float()
 
@@ -25,11 +48,34 @@ class RoPE(torch.nn.Module):
     def forward(self,
                 q: torch.Tensor,
                 k: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
-        
+        """
+        Performs a forward pass through the RoPE, rotating the queries
+        and keys.
+
+        Args:
+            q (torch.Tensor): Queries of shape
+                              (batch_size, num_attention_heads,
+                               seq_len, attention_head_dim).
+            k (torch.Tensor): Keys of shape
+                              (batch_size, num_attention_heads,
+                               seq_len, attention_head_dim).
+
+        Returns:
+            Tuple[torch.Tensor, torch.Tensor]: Rotated queries and keys.
+        """
+
         batch_size, num_attention_heads, seq_len, attention_head_dim = q.size()
-        
-        queries = q.reshape(batch_size, num_attention_heads, seq_len, attention_head_dim // 2, 2)
-        keys = k.reshape(batch_size, num_attention_heads, seq_len, attention_head_dim // 2, 2)
+
+        queries = q.reshape(batch_size,
+                            num_attention_heads,
+                            seq_len,
+                            attention_head_dim // 2,
+                            2)
+        keys = k.reshape(batch_size,
+                         num_attention_heads,
+                         seq_len,
+                         attention_head_dim // 2,
+                         2)
 
         q_complex = torch.view_as_complex(queries)
         k_complex = torch.view_as_complex(keys)
@@ -41,7 +87,13 @@ class RoPE(torch.nn.Module):
         new_q = torch.view_as_real(q_rotated)
         new_k = torch.view_as_real(k_rotated)
 
-        new_q = new_q.reshape(batch_size, num_attention_heads, seq_len, attention_head_dim)
-        new_k = new_k.reshape(batch_size, num_attention_heads, seq_len, attention_head_dim)
+        new_q = new_q.reshape(batch_size,
+                              num_attention_heads,
+                              seq_len,
+                              attention_head_dim)
+        new_k = new_k.reshape(batch_size,
+                              num_attention_heads,
+                              seq_len,
+                              attention_head_dim)
 
         return new_q, new_k
