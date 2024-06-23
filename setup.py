@@ -6,6 +6,6 @@ setup(
     packages=find_packages(),
     install_requires=[
         'torch>=2.3.1',
-        'transformers>=4.41.0'
+        'transformers>=4.41.2'
     ],
 )
