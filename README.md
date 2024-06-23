@@ -10,7 +10,7 @@ KANBert combines a transformer-based autoencoder architecture with Kolmogorov-Ar
 
 ## Transformer Auto-Encoders
 
-Transformer auto-encoders are relatively smaller models compared to their generative counterparts but are highly effective in performing language understanding tasks such as classification, named entity recognition, and embedding generation. The most popular transformer auto-encoder is BERT, and the parameters here are inspired by BERT.
+Transformer auto-encoders are relatively smaller models compared to their generative counterparts but are highly effective in performing language understanding tasks such as classification, named entity recognition, and embedding generation. The most popular transformer auto-encoder is BERT, and the parameters here are inspired by this model.
 
 <p align="center">
     <img src="images/bert_archi.png" alt="BERT Architecture" width="300">
