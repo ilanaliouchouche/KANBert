@@ -42,16 +42,16 @@ In KANs, each weight parameter is replaced by a univariate function, typically p
 | `model/kanbert.py`          | Implementation of the KANBert model                                |
 | `utils/`                    | Utility files for the project                                      |
 | `utils/encoder.py`          | Implementation of the Encoder layer                                |
-| `utils/multiheadattention.py`| Implementation of the MultiHeadAttention layer                     |
-| `utils/positionwise.py`     | Implementation of the Position wise Feed Forward layer                |
+| `utils/multiheadattention.py`| Implementation of the Multi Head Attention with KAN layers                     |
+| `utils/positionwise.py`     | Implementation of the Position wise Feed Forward with KAN layers                |
 | `utils/rope.py`             | Implementation of the RoPE for positional encoding                             |
-| `utils/config.py`           | Configuration file for the KANBert model                           |
+| `utils/config.py`           | Configuration file for the inputs HP of the KANBert model                           |
 | `model_tests/`              | Contains the test files for the project                            |
 | `model_tests/kanbert_test.py`| Unit tests for the KANBert model                                  |
 | `model_tests/utils_tests/`  | Contains the test files for the utility components                 |
 | `model_tests/utils_tests/encoder_test.py`| Unit tests for the Encoder layer                    |
-| `model_tests/utils_tests/multiheadattention_test.py`| Unit tests for the MultiHeadAttention layer |
-| `model_tests/utils_tests/positionwise_test.py`| Unit tests for the PositionWiseFeedForward layer|
+| `model_tests/utils_tests/multiheadattention_test.py`| Unit tests for the Multi Head Attention |
+| `model_tests/utils_tests/positionwise_test.py`| Unit tests for the Position wise Feed Forward layer|
 | `model_tests/utils_tests/rope_test.py`| Unit tests for the RoPE                           |
 
 ## Testing
