@@ -43,8 +43,8 @@ In KANs, each weight parameter is replaced by a univariate function, typically p
 | `utils/`                    | Utility files for the project                                      |
 | `utils/encoder.py`          | Implementation of the Encoder layer                                |
 | `utils/multiheadattention.py`| Implementation of the MultiHeadAttention layer                     |
-| `utils/positionwise.py`     | Implementation of the PositionWiseFeedForward layer                |
-| `utils/rope.py`             | Implementation of the RoPE layer                                   |
+| `utils/positionwise.py`     | Implementation of the Position wise Feed Forward layer                |
+| `utils/rope.py`             | Implementation of the RoPE for positional encoding                             |
 | `utils/config.py`           | Configuration file for the KANBert model                           |
 | `model_tests/`              | Contains the test files for the project                            |
 | `model_tests/kanbert_test.py`| Unit tests for the KANBert model                                  |
@@ -52,7 +52,7 @@ In KANs, each weight parameter is replaced by a univariate function, typically p
 | `model_tests/utils_tests/encoder_test.py`| Unit tests for the Encoder layer                    |
 | `model_tests/utils_tests/multiheadattention_test.py`| Unit tests for the MultiHeadAttention layer |
 | `model_tests/utils_tests/positionwise_test.py`| Unit tests for the PositionWiseFeedForward layer|
-| `model_tests/utils_tests/rope_test.py`| Unit tests for the RoPE layer                           |
+| `model_tests/utils_tests/rope_test.py`| Unit tests for the RoPE                           |
 
 ## Testing
 
