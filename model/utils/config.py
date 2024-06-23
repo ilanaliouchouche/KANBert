@@ -5,6 +5,7 @@ from dataclasses import dataclass
 class KANBertConfig:
     """
     Configuration class for KANBert model.
+
     Args:
         vocabulary_size (int): Size of the vocabulary.
         hidden_dim (int): Dimension of the hidden states.
