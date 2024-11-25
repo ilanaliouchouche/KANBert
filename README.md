@@ -1,6 +1,6 @@
 # KANBert
 
-KANBert combines a transformer-based autoencoder architecture with Kolmogorov-Arnold Networks (KANs) for an innovative approach to language understanding tasks.
+KANBert combines a transformer-based encoder only architecture with Kolmogorov-Arnold Networks (KANs) for an innovative approach to language understanding tasks.
 
 <p align="center">
     <img src="./images/kalmogorov.webp" alt="Kalmogorov" width="100" height="133">
@@ -8,9 +8,9 @@ KANBert combines a transformer-based autoencoder architecture with Kolmogorov-Ar
     <img src="./images/bert.jpeg" alt="BERT" width="100" height="133">
 </p>
 
-## Transformer Auto-Encoders
+## Transformer Encoders
 
-Transformer auto-encoders are relatively smaller models compared to their generative counterparts but are highly effective in performing language understanding tasks such as classification, named entity recognition, and embedding generation. The most popular transformer auto-encoder is BERT, and the parameters here are inspired by this model.
+Transformer encoders are relatively smaller models compared to their generative counterparts but are highly effective in performing language understanding tasks such as classification, named entity recognition, and embedding generation. The most popular transformer encoder is BERT, and the parameters here are inspired by this model.
 
 <p align="center">
     <img src="images/bert_archi.png" alt="BERT Architecture" width="300">
