@@ -58,14 +58,6 @@ In KANs, each weight parameter is replaced by a univariate function, typically p
 
 The code has been thoroughly tested, and the tests are available and executed as GitHub Actions workflows. The code is also flake8 friendly.
 
-```sh
-# To run the tests locally
-python -m unittest discover -s model_tests
-
-# To check for PEP8 compliance with flake8
-flake8 .
-```
-
 ### Sources
 
 [1] ResearchGate, *The Transformer based BERT base architecture with twelve encoder blocks*, [https://www.researchgate.net/figure/The-Transformer-based-BERT-base-architecture-with-twelve-encoder-blocks_fig2_349546860](https://www.researchgate.net/figure/The-Transformer-based-BERT-base-architecture-with-twelve-encoder-blocks_fig2_349546860)
