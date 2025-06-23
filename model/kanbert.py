@@ -28,12 +28,15 @@ class KANBert(nn.Module):
             for _ in range(config.n_layers)
         ])
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def forward(self,
+                x: torch.Tensor,
+                attention_mask: torch.Tensor) -> torch.Tensor:
         """
         Performs a forward pass through the KANBert model.
 
         Args:
             x (torch.Tensor): Input tensor of shape (batch_size, seq_len).
+            attention_mask (torch.Tensor): Tokens to ignore when computing MHA.
 
         Returns:
             torch.Tensor: Output tensor of shape
@@ -43,6 +46,6 @@ class KANBert(nn.Module):
         x = self.embeddings(x)
 
         for layer in self.layers:
-            x = layer(x)
+            x = layer(x, attention_mask)
 
         return x

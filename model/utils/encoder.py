@@ -29,19 +29,22 @@ class Encoder(nn.Module):
         self.ff = PositionWiseFeedForward(config)
 
     def forward(self,
-                x: torch.Tensor) -> torch.Tensor:
+                x: torch.Tensor,
+                attention_mask: torch.Tensor) -> torch.Tensor:
         """
         Performs a forward pass through the Encoder layer.
 
         Args:
             x (torch.Tensor): Input hidden states of shape
                               (batch_size, seq_len, hidden_dim).
+            attention_mask (torch.Tensor): Tokens to ignore when
+                              computing MHA.
 
         Returns:
             torch.Tensor: Output hidden states of shape
                           (batch_size, seq_len, hidden_dim).
         """
 
-        x = self.norm1(x + self.attention(x))
+        x = self.norm1(x + self.attention(x, attention_mask))
         x = self.norm2(x + self.ff(x))
         return x

@@ -1,7 +1,9 @@
 from model.utils.kan import KANLinear
 from model.utils.rope import RoPE
 from torch import nn
+import torch.nn.functional as F
 import torch
+import math
 from model.utils.config import KANBertConfig
 
 
@@ -23,25 +25,22 @@ class MultiHeadAttention(nn.Module):
 
         self.hidden_dim = config.hidden_dim
         self.num_attention_heads = config.num_attention_heads
-        self.attention_head_dim = (config.hidden_dim //
-                                   config.num_attention_heads)
-
-        self.q = KANLinear(config.hidden_dim, config.hidden_dim)
-        self.k = KANLinear(config.hidden_dim, config.hidden_dim)
-        self.v = KANLinear(config.hidden_dim, config.hidden_dim)
-
+        self.qkv = KANLinear(config.hidden_dim, 3*config.hidden_dim)
         self.out = nn.Linear(config.hidden_dim, config.hidden_dim)
 
         self.position_encoding = RoPE(config)
 
     def forward(self,
-                x: torch.Tensor) -> torch.Tensor:
+                x: torch.Tensor,  # B, L, D
+                attention_mask: torch.Tensor) -> torch.Tensor:  # B, L
         """
         Performs a forward pass through the MultiHeadAttention.
 
         Args:
             x (torch.Tensor): Input hidden states of shape
                               (batch_size, seq_len, hidden_dim).
+            attention_mask (torch.Tensor): Tokens to ignore when
+                              computing MHA.
 
         Returns:
             torch.Tensor: Output hidden states of shape
@@ -50,37 +49,17 @@ class MultiHeadAttention(nn.Module):
 
         batch_size, seq_len, _ = x.size()
 
-        q: torch.Tensor = self.q(x)
-        k: torch.Tensor = self.k(x)
-        v: torch.Tensor = self.v(x)
+        qkv: torch.Tensor = self.qkv(x)
+        qkv = qkv.view(batch_size, seq_len, self.num_attention_heads, -1)
+        qkv = qkv.permute(0, 2, 1, 3)
+        q, k, v = qkv.chunk(3, -1)
+        qkt = torch.einsum("bhld,bhmd->bhlm", q, k)
+        qkt = qkt / math.sqrt(q.size(-1))
+        mask = attention_mask.unsqueeze(1).unsqueeze(1).to(x.device)
+        masked_qkt = qkt.masked_fill(~mask, -torch.inf)
+        masked_qkt = F.softmax(masked_qkt, dim=-1)
+        output = torch.einsum("bhlm,bhmd->bhld", masked_qkt, v)
+        output = output.permute(0, 2, 1, 3).contiguous()
+        output = output.view(batch_size, seq_len, -1)
 
-        q = q.view(batch_size,
-                   seq_len,
-                   self.num_attention_heads,
-                   self.attention_head_dim)
-        k = k.view(batch_size,
-                   seq_len,
-                   self.num_attention_heads,
-                   self.attention_head_dim)
-        v = v.view(batch_size,
-                   seq_len,
-                   self.num_attention_heads,
-                   self.attention_head_dim)
-
-        q = q.transpose(1, 2)
-        k = k.transpose(1, 2)
-        v = v.transpose(1, 2)
-
-        q, k = self.position_encoding(q, k)
-
-        attention_scores = torch.matmul(q, k.transpose(-2, -1))
-        attention_scores = attention_scores / (self.attention_head_dim ** 0.5)
-        attention_alphas = torch.softmax(attention_scores, dim=-1)
-        attention_output = torch.matmul(attention_alphas, v)
-
-        attention_output = attention_output.transpose(1, 2).contiguous()
-        attention_output = attention_output.view(batch_size,
-                                                 seq_len,
-                                                 self.hidden_dim)
-
-        return self.out(attention_output)
+        return self.out(output)

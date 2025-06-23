@@ -37,6 +37,9 @@ class TestMultiHeadAttention(unittest.TestCase):
         self.input_tensor = torch.randn(self.batch_size,
                                         self.seq_length,
                                         self.hidden_dim)
+        self.input_attn_mask = torch.ones(self.batch_size,
+                                          self.seq_length,
+                                          dtype=torch.bool)
         self.device = "cpu"
         self.mha.to(self.device)
         self.input_tensor = self.input_tensor.to(self.device)
@@ -46,7 +49,7 @@ class TestMultiHeadAttention(unittest.TestCase):
         Test the shape of the output of the MultiHeadAttention model.
         """
 
-        output = self.mha(self.input_tensor)
+        output = self.mha(self.input_tensor, self.input_attn_mask)
         expected_shape = (self.batch_size,
                           self.seq_length,
                           self.hidden_dim)
@@ -60,7 +63,7 @@ class TestMultiHeadAttention(unittest.TestCase):
         Test the type of the output of the MultiHeadAttention model.
         """
 
-        output = self.mha(self.input_tensor)
+        output = self.mha(self.input_tensor, self.input_attn_mask)
         self.assertIsInstance(output,
                               torch.Tensor,
                               "Output should be a torch.Tensor, "
@@ -71,7 +74,7 @@ class TestMultiHeadAttention(unittest.TestCase):
         Test the device of the output of the MultiHeadAttention model.
         """
 
-        output = self.mha(self.input_tensor)
+        output = self.mha(self.input_tensor, self.input_attn_mask)
         self.assertEqual(output.device.type,
                          self.device,
                          f"Expected device {self.device}, "

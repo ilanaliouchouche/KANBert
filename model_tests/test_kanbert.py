@@ -44,13 +44,16 @@ class TestKANBert(unittest.TestCase):
         self.device = "cpu"
         self.kanbert_model.to(self.device)
         self.inputs['input_ids'] = self.inputs['input_ids'].to(self.device)
+        self.inputs['attention_mask'] = (
+            self.inputs['attention_mask'].to(self.device, torch.bool))
 
     def test_forward_shape(self) -> None:
         """
         Test the shape of the output of the KANBert model.
         """
 
-        kanbert_output = self.kanbert_model(self.inputs['input_ids'])
+        kanbert_output = self.kanbert_model(self.inputs['input_ids'],
+                                            self.inputs["attention_mask"])
         bert_output = self.bert_model(self.inputs['input_ids'])[0]
 
         self.assertEqual(kanbert_output.shape,
@@ -63,7 +66,8 @@ class TestKANBert(unittest.TestCase):
         Test the type of the output of the KANBert model.
         """
 
-        kanbert_output = self.kanbert_model(self.inputs['input_ids'])
+        kanbert_output = self.kanbert_model(self.inputs['input_ids'],
+                                            self.inputs["attention_mask"])
         self.assertIsInstance(kanbert_output,
                               torch.Tensor,
                               "Output should be a torch.Tensor, but got "
@@ -74,7 +78,8 @@ class TestKANBert(unittest.TestCase):
         Test the device of the output of the KANBert model.
         """
 
-        kanbert_output = self.kanbert_model(self.inputs['input_ids'])
+        kanbert_output = self.kanbert_model(self.inputs['input_ids'],
+                                            self.inputs["attention_mask"])
         self.assertEqual(kanbert_output.device.type,
                          self.device,
                          f"Expected device {self.device}, but got "
