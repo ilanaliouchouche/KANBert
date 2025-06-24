@@ -55,6 +55,7 @@ class MultiHeadAttention(nn.Module):
         qkv = qkv.view(batch_size, seq_len, self.num_attention_heads, -1)
         qkv = qkv.permute(0, 2, 1, 3)
         q, k, v = qkv.chunk(3, -1)
+        q, k = self.position_encoding(q, k)
         qkt = torch.einsum("bhld,bhmd->bhlm", q, k)
         qkt = qkt / math.sqrt(q.size(-1))
         mask = attention_mask.unsqueeze(1).unsqueeze(1).to(x.device)
