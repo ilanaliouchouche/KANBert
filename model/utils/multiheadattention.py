@@ -26,13 +26,15 @@ class MultiHeadAttention(nn.Module):
         self.hidden_dim = config.hidden_dim
         self.num_attention_heads = config.num_attention_heads
         self.qkv = KANLinear(config.hidden_dim, 3*config.hidden_dim)
+        self.attn_dropout = nn.Dropout(config.dropout)
+        self.post_attn_dropout = nn.Dropout(config.dropout)
         self.out = nn.Linear(config.hidden_dim, config.hidden_dim)
 
         self.position_encoding = RoPE(config)
 
     def forward(self,
-                x: torch.Tensor,  # B, L, D
-                attention_mask: torch.Tensor) -> torch.Tensor:  # B, L
+                x: torch.Tensor,
+                attention_mask: torch.Tensor) -> torch.Tensor:
         """
         Performs a forward pass through the MultiHeadAttention.
 
@@ -58,8 +60,10 @@ class MultiHeadAttention(nn.Module):
         mask = attention_mask.unsqueeze(1).unsqueeze(1).to(x.device)
         masked_qkt = qkt.masked_fill(~mask, -torch.inf)
         masked_qkt = F.softmax(masked_qkt, dim=-1)
+        masked_qkt = self.attn_dropout(masked_qkt)
         output = torch.einsum("bhlm,bhmd->bhld", masked_qkt, v)
         output = output.permute(0, 2, 1, 3).contiguous()
         output = output.view(batch_size, seq_len, -1)
+        output = self.post_attn_dropout(output)
 
         return self.out(output)

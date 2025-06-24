@@ -23,6 +23,8 @@ class KANBert(nn.Module):
         self.embeddings = nn.Embedding(config.vocabulary_size,
                                        config.hidden_dim)
 
+        self.dropout = nn.Dropout(config.dropout)
+
         self.layers = nn.ModuleList([
             Encoder(config)
             for _ in range(config.n_layers)
@@ -44,6 +46,7 @@ class KANBert(nn.Module):
         """
 
         x = self.embeddings(x)
+        x = self.dropout(x)
 
         for layer in self.layers:
             x = layer(x, attention_mask)

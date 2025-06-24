@@ -14,6 +14,8 @@ class KANBertConfig:
         intermediate_dim (int): Dimension of the intermediate layer
                                 in the position wise feed forward.
         num_attention_heads (int): Number of attention heads.
+        dropout (float): The probability for a neuron to be desactivated
+                         or not.
         periodicity (int): Periodicity of the sinusoidal positional encoding.
     """
 
@@ -23,4 +25,5 @@ class KANBertConfig:
     n_layers: int
     intermediate_dim: int
     num_attention_heads: int
+    dropout: float = 0.1
     periodicity: int = 10000
