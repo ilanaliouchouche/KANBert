@@ -22,9 +22,9 @@ Transformer encoders are relatively smaller models compared to their generative 
 
 ## Kolmogorov-Arnold Networks (KAN)
 
-Kolmogorov-Arnold Networks (KANs) are a new type of neural network that take a fundamentally different approach to learning compared to traditional MLPs. While MLPs have fixed activation functions on nodes (or “neurons”), KANs have learnable activation functions on edges (or “weights”). This simple change significantly enhances the network’s performance and interpretability.
+Kolmogorov–Arnold Networks (KANs) are a new type of neural network that take a fundamentally different approach to learning compared to traditional MLPs. While MLPs use fixed activation functions at the nodes (or “neurons”), KANs place learnable univariate functions on the edges (or “weights”).
 
-In KANs, each weight parameter is replaced by a univariate function, typically parameterized as a spline. This architecture allows KANs to learn both the compositional structure of a problem and the optimal univariate functions, resulting in highly accurate models.
+In KANs, each weight is replaced by a univariate function, typically parameterized as a spline. This allows the model to learn both the compositional structure of a problem and the optimal form of each transformation, often leading to compact and highly accurate models.
 
 <p align="center">
     <img src="images/mlp_vs_kan.png" alt="KAN vs MLP" width="300">
