@@ -11,7 +11,7 @@ class PositionWiseFeedForward(nn.Module):
 
     def __init__(self,
                  config: KANBertConfig,
-                 activation: nn.Module = nn.GELU(),
+                 activation: nn.Module = nn.SiLU(),
                  dropout: float = 0.1) -> None:
         """
         Constructor for the PositionWiseFeedForward class.
