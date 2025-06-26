@@ -6,8 +6,8 @@ setup(
     packages=find_packages(),
     install_requires=[
         'torch>=2.3.1',
-        'transformers>=4.41.2',
-        'torch_geometric',
-        'torch-cluster'
+        # 'transformers>=4.41.2',
+        # 'torch_geometric',
+        # 'torch-cluster'
     ],
 )
