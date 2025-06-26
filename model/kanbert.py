@@ -4,19 +4,8 @@ import torch.nn as nn
 
 
 class KANBert(nn.Module):
-    """
-    Implementation of a Transformer Autoencoder with KAN layers.
-    We can also find a implementation of the RoPE instead of the
-    the positional embedding layer.
-    """
 
     def __init__(self, config: KANBertConfig) -> None:
-        """
-        Constructor for the KANBert class.
-
-        Args:
-            config (KANBertConfig): Configuration object for the KANBert model.
-        """
 
         super().__init__()
 
