@@ -8,18 +8,9 @@ from model.utils.config import KANBertConfig
 
 
 class MultiHeadAttention(nn.Module):
-    """
-    Implementation of the MultiHeadAttention with KANLinear layers.
-    """
 
     def __init__(self,
                  config: KANBertConfig) -> None:
-        """
-        Constructor for the MultiHeadAttention class.
-
-        Args:
-            config (KANBertConfig): Configuration object for the KANBert model.
-        """
 
         super().__init__()
 
@@ -35,19 +26,6 @@ class MultiHeadAttention(nn.Module):
     def forward(self,
                 x: torch.Tensor,
                 attention_mask: torch.Tensor) -> torch.Tensor:
-        """
-        Performs a forward pass through the MultiHeadAttention.
-
-        Args:
-            x (torch.Tensor): Input hidden states of shape
-                              (batch_size, seq_len, hidden_dim).
-            attention_mask (torch.Tensor): Tokens to ignore when
-                              computing MHA.
-
-        Returns:
-            torch.Tensor: Output hidden states of shape
-                          (batch_size, seq_len, hidden_dim).
-        """
 
         batch_size, seq_len, _ = x.size()
 

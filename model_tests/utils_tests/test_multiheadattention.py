@@ -5,15 +5,9 @@ from model.utils.multiheadattention import MultiHeadAttention
 
 
 class TestMultiHeadAttention(unittest.TestCase):
-    """
-    Unit tests for the MultiHeadAttention class in the KANBert model.
-    """
 
     @classmethod
     def setUpClass(cls) -> None:
-        """
-        Set up the configuration and the MultiHeadAttention model.
-        """
 
         cls.config = KANBertConfig(
             vocabulary_size=30522,
@@ -27,9 +21,6 @@ class TestMultiHeadAttention(unittest.TestCase):
         cls.mha = MultiHeadAttention(cls.config)
 
     def setUp(self) -> None:
-        """
-        Set up the inputs for the MultiHeadAttention model.
-        """
 
         self.batch_size = 2
         self.seq_length = 10
@@ -45,9 +36,6 @@ class TestMultiHeadAttention(unittest.TestCase):
         self.input_tensor = self.input_tensor.to(self.device)
 
     def test_forward_shape(self) -> None:
-        """
-        Test the shape of the output of the MultiHeadAttention model.
-        """
 
         output = self.mha(self.input_tensor, self.input_attn_mask)
         expected_shape = (self.batch_size,
@@ -59,9 +47,6 @@ class TestMultiHeadAttention(unittest.TestCase):
                          f"but got {output.shape}")
 
     def test_forward_type(self) -> None:
-        """
-        Test the type of the output of the MultiHeadAttention model.
-        """
 
         output = self.mha(self.input_tensor, self.input_attn_mask)
         self.assertIsInstance(output,
@@ -70,9 +55,6 @@ class TestMultiHeadAttention(unittest.TestCase):
                               f"but got {type(output)}")
 
     def test_device(self) -> None:
-        """
-        Test the device of the output of the MultiHeadAttention model.
-        """
 
         output = self.mha(self.input_tensor, self.input_attn_mask)
         self.assertEqual(output.device.type,

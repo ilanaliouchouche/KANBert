@@ -7,15 +7,9 @@ import torch
 
 
 class TestKANBert(unittest.TestCase):
-    """
-    Unit tests for the KANBert model.
-    """
 
     @classmethod
     def setUpClass(cls) -> None:
-        """
-        Set up the official BERT model, tokenizer, and the KANBert model.
-        """
 
         cls.model_name = "bert-base-uncased"
         cls.tokenizer = AutoTokenizer.from_pretrained(cls.model_name)
@@ -32,9 +26,6 @@ class TestKANBert(unittest.TestCase):
         cls.kanbert_model = KANBert(cls.config)
 
     def setUp(self) -> None:
-        """
-        Set up the inputs for the KANBert model.
-        """
 
         self.text = "This is a file for unit tests"
         self.inputs = self.tokenizer(self.text,
@@ -48,9 +39,6 @@ class TestKANBert(unittest.TestCase):
             self.inputs['attention_mask'].to(self.device, torch.bool))
 
     def test_forward_shape(self) -> None:
-        """
-        Test the shape of the output of the KANBert model.
-        """
 
         kanbert_output = self.kanbert_model(self.inputs['input_ids'],
                                             self.inputs["attention_mask"])
@@ -62,9 +50,6 @@ class TestKANBert(unittest.TestCase):
                          "but got {kanbert_output.shape}")
 
     def test_forward_type(self) -> None:
-        """
-        Test the type of the output of the KANBert model.
-        """
 
         kanbert_output = self.kanbert_model(self.inputs['input_ids'],
                                             self.inputs["attention_mask"])
@@ -74,9 +59,6 @@ class TestKANBert(unittest.TestCase):
                               f"{type(kanbert_output)}")
 
     def test_device(self) -> None:
-        """
-        Test the device of the output of the KANBert model.
-        """
 
         kanbert_output = self.kanbert_model(self.inputs['input_ids'],
                                             self.inputs["attention_mask"])
@@ -86,10 +68,6 @@ class TestKANBert(unittest.TestCase):
                          f"{kanbert_output.device}")
 
     def test_embeddings_shape(self) -> None:
-        """
-        Test the shape of the output of the embeddings layer of the KANBert
-        model.
-        """
 
         token_emb = self.kanbert_model.embeddings(self.inputs['input_ids'])
         expected_shape = (self.inputs['input_ids'].shape[0],
@@ -101,10 +79,6 @@ class TestKANBert(unittest.TestCase):
                          f"but got {token_emb.size()}")
 
     def test_embeddings_type(self) -> None:
-        """
-        Test the type of the output of the embeddings layer of the KANBert
-        model.
-        """
 
         token_emb = self.kanbert_model.embeddings(self.inputs['input_ids'])
         self.assertIsInstance(token_emb,
@@ -113,10 +87,6 @@ class TestKANBert(unittest.TestCase):
                               f"but got {type(token_emb)}")
 
     def test_embeddings_device(self) -> None:
-        """
-        Test the device of the output of the embeddings layer of the KANBert
-        model.
-        """
 
         token_emb = self.kanbert_model.embeddings(self.inputs['input_ids'])
         self.assertEqual(token_emb.device.type,

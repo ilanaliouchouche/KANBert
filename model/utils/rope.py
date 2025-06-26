@@ -4,18 +4,9 @@ from model.utils.config import KANBertConfig
 
 
 class RoPE(torch.nn.Module):
-    """
-    Implementation of the Relative Positional Encoding.
-    """
 
     def __init__(self,
                  config: KANBertConfig) -> None:
-        """
-        Constructor for the RoPE class.
-
-        Args:
-            config (KANBertConfig): Configuration object for the KANBert model.
-        """
 
         super().__init__()
 
@@ -28,13 +19,6 @@ class RoPE(torch.nn.Module):
                              self._generate_rotation_matrix())
 
     def _generate_rotation_matrix(self) -> torch.Tensor:
-        """
-        Generates the rotation matrix for the RoPE.
-
-        Returns:
-            torch.Tensor: Rotation matrix of shape
-                          (max_sequence_len, attention_head_dim).
-        """
 
         frequencies = 1.0 / (
                       self.periodicity ** (
@@ -48,21 +32,6 @@ class RoPE(torch.nn.Module):
     def forward(self,
                 q: torch.Tensor,
                 k: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
-        """
-        Performs a forward pass through the RoPE, rotating the queries
-        and keys.
-
-        Args:
-            q (torch.Tensor): Queries of shape
-                              (batch_size, num_attention_heads,
-                               seq_len, attention_head_dim).
-            k (torch.Tensor): Keys of shape
-                              (batch_size, num_attention_heads,
-                               seq_len, attention_head_dim).
-
-        Returns:
-            Tuple[torch.Tensor, torch.Tensor]: Rotated queries and keys.
-        """
 
         batch_size, num_attention_heads, seq_len, attention_head_dim = q.size()
 

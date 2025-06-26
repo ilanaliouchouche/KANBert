@@ -5,15 +5,9 @@ from model.utils.positionwise import PositionWiseFeedForward
 
 
 class TestPositionWiseFeedForward(unittest.TestCase):
-    """
-    Unit tests for the PositionWiseFeedForward class in the KANBert model.
-    """
 
     @classmethod
     def setUpClass(cls) -> None:
-        """
-        Set up the configuration and the PositionWiseFeedForward model.
-        """
 
         cls.config = KANBertConfig(
             vocabulary_size=30522,
@@ -27,9 +21,6 @@ class TestPositionWiseFeedForward(unittest.TestCase):
         cls.pwff = PositionWiseFeedForward(cls.config)
 
     def setUp(self) -> None:
-        """
-        Set up the inputs for the PositionWiseFeedForward model.
-        """
 
         self.batch_size = 2
         self.seq_length = 10
@@ -42,9 +33,6 @@ class TestPositionWiseFeedForward(unittest.TestCase):
         self.input_tensor = self.input_tensor.to(self.device)
 
     def test_forward_shape(self) -> None:
-        """
-        Test the shape of the output of the PositionWiseFeedForward model.
-        """
 
         output = self.pwff(self.input_tensor)
         expected_shape = (self.batch_size,
@@ -56,9 +44,6 @@ class TestPositionWiseFeedForward(unittest.TestCase):
                          f"but got {output.shape}")
 
     def test_forward_type(self) -> None:
-        """
-        Test the type of the output of the PositionWiseFeedForward model.
-        """
 
         output = self.pwff(self.input_tensor)
         self.assertIsInstance(output,
@@ -67,9 +52,6 @@ class TestPositionWiseFeedForward(unittest.TestCase):
                               f"but got {type(output)}")
 
     def test_device(self) -> None:
-        """
-        Test the device of the output of the PositionWiseFeedForward model.
-        """
 
         output = self.pwff(self.input_tensor)
         self.assertEqual(output.device.type,

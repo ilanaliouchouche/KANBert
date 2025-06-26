@@ -5,15 +5,9 @@ from model.utils.rope import RoPE
 
 
 class TestRoPE(unittest.TestCase):
-    """
-    Unit tests for the RoPE class in the KANBert model.
-    """
 
     @classmethod
     def setUpClass(cls) -> None:
-        """
-        Set up the configuration and the RoPE model.
-        """
 
         cls.config = KANBertConfig(
             vocabulary_size=30522,
@@ -27,9 +21,6 @@ class TestRoPE(unittest.TestCase):
         cls.rope = RoPE(cls.config)
 
     def setUp(self) -> None:
-        """
-        Set up the inputs for the RoPE model.
-        """
 
         self.batch_size = 2
         self.seq_length = 10
@@ -50,9 +41,6 @@ class TestRoPE(unittest.TestCase):
         self.k_tensor = self.k_tensor.to(self.device)
 
     def test_forward_shape(self) -> None:
-        """
-        Test the shape of the output of the RoPE model.
-        """
 
         new_q, new_k = self.rope(self.q_tensor, self.k_tensor)
         expected_shape = (self.batch_size,
@@ -69,9 +57,6 @@ class TestRoPE(unittest.TestCase):
                          f"but got {new_k.shape}")
 
     def test_forward_type(self) -> None:
-        """
-        Test the type of the output of the RoPE model.
-        """
 
         new_q, new_k = self.rope(self.q_tensor, self.k_tensor)
         self.assertIsInstance(new_q,
@@ -84,9 +69,6 @@ class TestRoPE(unittest.TestCase):
                               f"but got {type(new_k)}")
 
     def test_device(self) -> None:
-        """
-        Test the device of the output of the RoPE model.
-        """
 
         new_q, new_k = self.rope(self.q_tensor, self.k_tensor)
         self.assertEqual(new_q.device.type,
